@@ -43,16 +43,16 @@ function InitialiseColorTable()
         {E_BLOCK_BROWN_GLAZED_TERRACOTTA,"102 76 51 "},
         {E_BLOCK_BROWN_MUSHROOM,"102 76 51 "},
         {E_BLOCK_BROWN_SHULKER_BOX,"102 76 51 "},
-        {E_BLOCK_BURNING_FURNACE, "000 000 000 "},
-        {E_BLOCK_BUTTON_PRESSED, "000 000 000 "},
-        {E_BLOCK_BUTTON_XM, "000 000 000 "},
-        {E_BLOCK_BUTTON_XP, "000 000 000 "},
-        {E_BLOCK_BUTTON_YM, "000 000 000 "},
-        {E_BLOCK_BUTTON_YP, "000 000 000 "},
-        {E_BLOCK_BUTTON_ZM, "000 000 000 "},
-        {E_BLOCK_BUTTON_ZP, "000 000 000 "},
-        {E_BLOCK_CACTUS, "000 000 000 "},
-        {E_BLOCK_CAKE, "000 000 000 "},
+        {E_BLOCK_BURNING_FURNACE, "50 50 50 "},
+        {E_BLOCK_BUTTON_PRESSED, "102 76 51 "},
+        {E_BLOCK_BUTTON_XM, "102 76 51 "},
+        {E_BLOCK_BUTTON_XP, "102 76 51 "},
+        {E_BLOCK_BUTTON_YM, "102 76 51 "},
+        {E_BLOCK_BUTTON_YP, "102 76 51 "},
+        {E_BLOCK_BUTTON_ZM, "102 76 51 "},
+        {E_BLOCK_BUTTON_ZP, "102 76 51 "},
+        {E_BLOCK_CACTUS, "102 127 51 "},
+        {E_BLOCK_CAKE, "199 199 199 "},
         {E_BLOCK_CARPET, "000 000 000 "},
         {E_BLOCK_CARROTS, "000 000 000 "},
         {E_BLOCK_CAULDRON, "000 000 000 "},
@@ -71,7 +71,7 @@ function InitialiseColorTable()
         {E_BLOCK_CONCRETE, "000 000 000 "},
         {E_BLOCK_CONCRETE_POWDER, "000 000 000 "},
         {E_BLOCK_CRAFTING_TABLE, "000 000 000 "},
-        {E_BLOCK_CROPS, "000 000 000 "},
+        {E_BLOCK_CROPS, "102 127 51 "},
         {E_BLOCK_CYAN_GLAZED_TERRACOTTA, "000 000 000 "},
         {E_BLOCK_CYAN_SHULKER_BOX, "000 000 000 "},
         {E_BLOCK_DANDELION, "000 000 000 "},
@@ -254,7 +254,7 @@ function InitialiseColorTable()
         {E_BLOCK_STAIRS_ZP, "000 000 000 "},
         {E_BLOCK_STANDING_BANNER, "000 000 000 "},
         {E_BLOCK_STATIONARY_LAVA, "000 000 000 "},
-        {E_BLOCK_STATIONARY_WATER, "000 000 000 "},
+        {E_BLOCK_STATIONARY_WATER, "64 64 255 "},
         {E_BLOCK_STICKY_PISTON, "000 000 000 "},
         {E_BLOCK_STONE, "000 000 000 "},
         {E_BLOCK_STONE_BRICKS, "000 000 000 "},
@@ -277,7 +277,7 @@ function InitialiseColorTable()
         {E_BLOCK_VINES, "000 000 000 "},
         {E_BLOCK_WALLSIGN, "000 000 000 "},
         {E_BLOCK_WALL_BANNER, "000 000 000 "},
-        {E_BLOCK_WATER, "000 000 000 "},
+        {E_BLOCK_WATER, "64 64 255 "},
         {E_BLOCK_WHEAT, "000 000 000 "},
         {E_BLOCK_WHITE_GLAZED_TERRACOTTA, "000 000 000 "},
         {E_BLOCK_WHITE_SHULKER_BOX, "000 000 000 "},
@@ -301,41 +301,6 @@ end
 
 
 --[[
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 {E_BLOCK_CACTUS, "0 124 0 "},

@@ -6,8 +6,10 @@ function Initialize(Plugin)
 	Plugin:SetName("StaticMap")
 	Plugin:SetVersion(1)
 	
-	
-    ChunkResolution = 128
+    
+    
+    GlobalTick = 0
+	Chunks = {}
     ColorTable = InitialiseColorTable()
 	Sep = cFile:GetPathSeparator()
 	Directory = "Plugins" .. Sep .. Plugin:GetFolderName() .. Sep
@@ -40,8 +42,8 @@ function Initialize(Plugin)
     
     
 	cPluginManager:AddHook(cPluginManager.HOOK_CHUNK_GENERATED, OnChunkGenerated);
-
-	
+    cPluginManager:AddHook(cPluginManager.HOOK_TICK, OnTick);
+	cPluginManager:AddHook(cPluginManager.HOOK_WORLD_STARTED, OnWorldStarted);
     
     
 	
@@ -60,7 +62,14 @@ end
 function OnChunkGenerated(World, ChunkX, ChunkZ, ChunkDesc)
     local FileName = "Chunk" .. ChunkX .. "." .. ChunkZ .. ".png"
     if not(cFile:IsFile("..\\..\\webadmin\\files\\images" .. Sep .. FileName)) then
-        RenderChunk(World, ChunkX, ChunkZ, ChunkDesc)
+        local BlockMap = {}
+        for x = 1, 16 do
+            BlockMap[x] = {}
+            for y = 1, 16 do
+                BlockMap[x][y] = tonumber(ChunkDesc:GetBlockType(x, ChunkDesc:GetHeight(x, y), y))
+            end
+        end
+        table.insert(Chunks, {FileName, BlockMap})
     end
 end
 
@@ -70,53 +79,83 @@ end
 
 
 
-function RenderChunk(World, ChunkX, ChunkZ, ChunkDesc)
-    LOG("Rendering Chunk: " .. ChunkX .. "|" .. ChunkZ)
-    local Percentage = 0
-	local Temp = ""
-	local lines = {}
-	local line = {}
-	local out = {}
-	for x = 1, 16 do
-		for y = 1, 16 do
-			local color
-            for Key, Value in pairs(ColorTable) do
-                if Value[1] == ChunkDesc:GetBlockType(x, ChunkDesc:GetHeight(x, y), y) then
-                    color = Value[2]
+function GenerateChunkImage(FileName, BlockMap)
+    local Temp = ""
+    local lines = {}
+    local line = {}
+    local out = {}
+    for x = 1, 16 do
+        for y = 1, 16 do
+            local color = "000 000 000 "
+            for Key = 1, #ColorTable do
+                if ColorTable[Key][1] == BlockMap[x][y] then
+                    color = ColorTable[Key][2]
                 end
             end
+            Temp = Temp .. color
             
-			Temp = Temp .. color
-			
-			
-			if y % 4 == 0 then
-				table.insert(lines, Temp)
-				Temp = "\n"
-			elseif y == Resolution then
+            
+            if y % 4 == 0 then
                 table.insert(lines, Temp)
+                Temp = "\n"
             end
-			
-			
-		end
-		out[x] = table.concat(lines)
-		for K,V in pairs(lines) do
-			lines[K] = nil
-		end
-		
-	end
+            
+            
+        end
+        out[x] = table.concat(lines)
+        lines = {}
+        
+    end
     local Blocks = table.concat(out, '\n')
     
     cFile:CreateFolder(Directory .. ".." .. Sep .. ".." .. Sep .. "webadmin/files/images")
-	local Image = io.open (Directory .. "Images" .. Sep .. "img.ppm", "w+")
-	Image:write("P3\n" .. 16 .. " " .. 16 .. "\n255\n")
-	Image:write(Blocks)
+    cFile:CreateFolder(Directory .. "Images" .. Sep)
+	local Image = io.open(Directory .. "Images" .. Sep .. "img.ppm", "w")
+	Image:write("P3\n" .. 16 .. " " .. 16 .. "\n255\n" .. Blocks)
 	Image:close()
-    local FileName = "Chunk" .. ChunkX .. "." .. ChunkZ .. ".png"
+    
+    
+    
     if OS == "Windows" then
-        local Command = Directory .. "Magik\\Windows\\convert " .. Directory .. "Images\\img.ppm " .. Directory .. "..\\..\\webadmin\\files\\images" .. Sep .. FileName
+        for Key, Value in pairs(Chunks) do
+            if Value[1] == FileName then
+                Command = Directory .. "Magik\\Windows\\convert " .. Directory .. "Images\\img.ppm " .. Directory .. "..\\..\\webadmin\\files\\images" .. Sep .. FileName .. ".png \n"
+            end
+        end
         os.execute(Command)
     end
+    
+    
+    
 end
+
+
+
+function OnTick(Delta)
+    if GlobalTick % 1 == 0 then
+        if #Chunks > 0.5 then
+            local Temp = 0
+            for Key, Value in pairs(Chunks) do
+                if Temp < 0.5 then
+                    GenerateChunkImage(Chunks[Key][1], Chunks[Key][2])
+                    Temp = Temp + 1
+                    Chunks[Key] = nil
+                end
+            end
+        end
+    end
+    GlobalTick = GlobalTick + 1
+    
+end
+
+
+function OnWorldStarted(World)
+    for Key, Value in pairs(Chunks) do
+        GenerateChunkImage(Chunks[Key][1], Chunks[Key][2])
+        Chunks[Key] = nil
+    end
+end
+
 
 
 
