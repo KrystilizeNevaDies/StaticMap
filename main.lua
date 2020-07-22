@@ -32,7 +32,7 @@ function Initialize(Plugin)
 	elseif BinaryFormat == "dylib" then
 		OS = "MacOS"
 	end
-    if OS = "Linux" then
+    if OS == "Linux" then
         n = os.tmpname()
 
         os.execute("uname -a > " .. n)
