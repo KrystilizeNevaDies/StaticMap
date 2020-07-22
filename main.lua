@@ -46,6 +46,7 @@ function Initialize(Plugin)
         end
 
         os.remove(n)
+    end
 	BinaryFormat = nil
 	
     LOG("Detected Operating System: " .. OS)
