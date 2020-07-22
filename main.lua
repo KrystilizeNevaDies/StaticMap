@@ -32,10 +32,26 @@ function Initialize(Plugin)
 	elseif BinaryFormat == "dylib" then
 		OS = "MacOS"
 	end
-	
+    if OS = "Linux" then
+        n = os.tmpname()
+
+        os.execute("uname -a > " .. n)
+
+        for line in io.lines(n) do
+            if string.match(line, "x86_64") then
+                ARCH = "x86_64"
+            elseif string.match(line, "aarch64") then
+                ARCH = "aarch64"
+            end
+        end
+
+        os.remove(n)
 	BinaryFormat = nil
 	
-	LOG("Detected Operating System: " .. OS)
+    LOG("Detected Operating System: " .. OS)
+    if OS == "Linux" then
+        LOG("Detected Arch: " .. ARCH)
+    end
 	
 	
     
@@ -120,6 +136,17 @@ function GenerateChunkImage(FileName, BlockMap)
         for Key, Value in pairs(Chunks) do
             if Value[1] == FileName then
                 Command = Directory .. "Magik\\Windows\\convert " .. Directory .. "Images\\img.ppm " .. Directory .. "..\\..\\webadmin\\files\\images" .. Sep .. FileName .. ".png \n"
+            end
+        end
+        os.execute(Command)
+    elseif OS == "Linux" then
+        for Key, Value in pairs(Chunks) do
+            if Value[1] == FileName then
+                if ARCH == "x86_64" then
+                    Command = Directory .. "Magik\\linuxmagick convert " .. Directory .. "Images\\img.ppm " .. Directory .. "..\\..\\webadmin\\files\\images" .. Sep .. FileName .. ".png \n"
+                elseif ARCH == "aarch64" then
+                    Command = Directory .. "Magik\\linuxmagick_aarch64 convert " .. Directory .. "Images\\img.ppm " .. Directory .. "..\\..\\webadmin\\files\\images" .. Sep .. FileName .. ".png \n"
+                end
             end
         end
         os.execute(Command)
