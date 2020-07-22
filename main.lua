@@ -144,9 +144,9 @@ function GenerateChunkImage(FileName, BlockMap)
         for Key, Value in pairs(Chunks) do
             if Value[1] == FileName then
                 if ARCH == "x86_64" then
-                    Command = Directory .. "Magik\\linuxmagick convert " .. Directory .. "Images\\img.ppm " .. Directory .. "..\\..\\webadmin\\files\\images" .. Sep .. FileName .. ".png \n"
+                    Command = Directory .. "Magik/linuxmagick convert " .. Directory .. "Images/img.ppm " .. Directory .. "../../webadmin/files/images" .. Sep .. FileName .. ".png \n"
                 elseif ARCH == "aarch64" then
-                    Command = Directory .. "Magik\\linuxmagick_aarch64 convert " .. Directory .. "Images\\img.ppm " .. Directory .. "..\\..\\webadmin\\files\\images" .. Sep .. FileName .. ".png \n"
+                    Command = Directory .. "Magik/linuxmagick_aarch64 convert " .. Directory .. "Images/img.ppm " .. Directory .. "../../webadmin/files/images" .. Sep .. FileName .. ".png \n"
                 end
             end
         end
