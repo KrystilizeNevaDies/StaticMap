@@ -6,8 +6,8 @@ Static Map is a dynmap-like plugin for the Open Source C++ Minecraft server [Cub
 
 ## TODO:
 - A web interface
+    - Dynamic Resolutions
+    - Entity Viewer
+    - User Integration (Sign on via username)
 - Finish Colortable for blocks
 - On-chunk-update re-rendering of a chunk
-- Dynamic Resolutions
-- Entity Viewer
-- User Integration (Sign on via username)
