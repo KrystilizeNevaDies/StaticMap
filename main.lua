@@ -43,7 +43,7 @@ function OnChunkGenerated(World, ChunkX, ChunkZ, ChunkDesc)
   
   
   ]]
-      local FileName = "Chunk" .. ChunkX .. "." .. ChunkZ .. ".png"
+      local FileName = "Chunk" .. ChunkX .. "." .. ChunkZ
       
       if not(cFile:IsFile("..\\..\\webadmin\\files\\images" .. Sep .. FileName)) -- If file doesn't exist, start generating heightmap
           local BlockMap = {}
