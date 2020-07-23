@@ -286,7 +286,7 @@ function InitialiseColorTable()
         {E_BLOCK_WOODEN_PRESSURE_PLATE, "000 000 000 "},
         {E_BLOCK_WOODEN_SLAB, "000 000 000 "},
         {E_BLOCK_WOODEN_STAIRS, "000 000 000 "},
-        {E_BLOCK_WOOL, "255 255 255 "},
+        {E_BLOCK_WOOL, "000 000 000 "},
         {E_BLOCK_WORKBENCH, "000 000 000 "},
         {E_BLOCK_YELLOW_FLOWER, "000 000 000 "},
         {E_BLOCK_YELLOW_GLAZED_TERRACOTTA, "229 229 51 "},
