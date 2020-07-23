@@ -11,7 +11,7 @@ function Initialize(Plugin)
   
   
   -- Initialize GlobalVars
-  ChunksPerRender = 
+  ChunksPerRender = 1
   TicksPerRender = 20
   GlobalTick = 0
 	Chunks = {}
