@@ -10,12 +10,12 @@ function Initialize(Plugin)
   
   
   
-  -- Initialize GlobalVars
-  ChunksPerRender = 1
-  TicksPerRender = 20
-  GlobalTick = 0
+	-- Initialize GlobalVars
+	ChunksPerRender = 1
+	TicksPerRender = 20
+	GlobalTick = 0
 	Chunks = {}
-  ColorTable = InitialiseColorTable()
+	ColorTable = InitialiseColorTable()
 	Sep = cFile:GetPathSeparator()
 	Directory = "Plugins" .. Sep .. Plugin:GetFolderName() .. Sep
 	
@@ -32,6 +32,51 @@ function Initialize(Plugin)
 	local BinaryFormat = package.cpath:match("%p[\\|/]?%p(%a+)")
 	
 	if BinaryFormat == "dll" then
+			OS = "Windows"
+	elseif BinaryFormat == "so" then
+		OS = "Linux"
+	elseif BinaryFormat == "dylib" then
+		OS = "MacOS"
+	end
+    if OS == "Linux" then -- Find linux Architecture
+        n = os.tmpname()
+
+        os.execute("uname -a > " .. n)
+
+        for line in io.lines(n) do
+            if string.match(line, "x86_64") then
+                ARCH = "x86_64"
+            elseif string.match(line, "aarch64") then
+                ARCH = "aarch64"
+            end
+        end
+
+        os.remove(n)
+    end
+	BinaryFormat = nil
+
+    LOG("Detected Operating System: " .. OS)
+    if OS == "Linux" then
+        LOG("Detected Arch: " .. ARCH)
+    end
+
+
+
+
+	-- Initialise Hooks
+	cPluginManager:AddHook(cPluginManager.HOOK_CHUNK_GENERATED, OnChunkGenerated);
+    cPluginManager:AddHook(cPluginManager.HOOK_TICK, OnTick);
+	cPluginManager:AddHook(cPluginManager.HOOK_WORLD_STARTED, OnWorldStarted);
+
+
+
+	LOGINFO(" - Static Map Loaded - ")
+
+
+
+
+
+	return true
 end
 
 
@@ -45,7 +90,7 @@ function OnChunkGenerated(World, ChunkX, ChunkZ, ChunkDesc)
   ]]
       local FileName = "Chunk" .. ChunkX .. "." .. ChunkZ
       
-      if not(cFile:IsFile("..\\..\\webadmin\\files\\images" .. Sep .. FileName)) -- If file doesn't exist, start generating heightmap
+      if not(cFile:IsFile("..\\..\\webadmin\\files\\images" .. Sep .. FileName)) then -- If file doesn't exist, start generating heightmap
           local BlockMap = {}
           for x = 1, 16 do
               BlockMap[x] = {}
@@ -109,7 +154,7 @@ function GenerateChunkImage(FileName, BlockMap)
         
         
         
-        out[x] = table.concat
+        out[x] = table.concat(lines, "")
         lines = {}
     end
     local Blocks = table.concat(out, '\n') -- Compile ppm file
@@ -184,10 +229,14 @@ end
 
 
 function OnWorldStarted(World) -- Render all generated chunks on startup
-    for Key, Value in pairs(Chunks) do
-        GenerateChunkImage(Chunks[Key][1], Chunks[Key][2])
-        Chunks[Key] = nil
-    end
+	if #Chunks > 10 then
+		LOG("Please Wait - Rendering Startup Chunks")
+		for Key, Value in pairs(Chunks) do
+			GenerateChunkImage(Chunks[Key][1], Chunks[Key][2])
+			Chunks[Key] = nil
+		end
+		LOG("Finished")
+	end
 end
 
 
