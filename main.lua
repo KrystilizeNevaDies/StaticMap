@@ -228,17 +228,5 @@ function OnTick(Delta)
 end
 
 
-function OnWorldStarted(World) -- Render all generated chunks on startup
-	if #Chunks > 10 then
-		LOG("Please Wait - Rendering Startup Chunks")
-		for Key, Value in pairs(Chunks) do
-			GenerateChunkImage(Chunks[Key][1], Chunks[Key][2])
-			Chunks[Key] = nil
-		end
-		LOG("Finished")
-	end
-end
-
-
 
 
