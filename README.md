@@ -1,5 +1,8 @@
-# StaticMap
-Static Map is a dynmap-like plugin for the opensource C++ minecraft server [Cuberite](https://github.com/cuberite/cuberite).
+# Static Map
+Static Map is a dynmap-like plugin for the Open Source C++ Minecraft server [Cuberite](https://github.com/cuberite/cuberite).
+
+## What Works:
+- Creation of an image on chunk genertation
 
 ## TODO:
 - A web interface
@@ -8,7 +11,3 @@ Static Map is a dynmap-like plugin for the opensource C++ minecraft server [Cube
 - Dynamic Resolutions
 - Entity Viewer
 - User Integration (Sign on via username)
-
-
-## What Works:
-- Creation of an image on chunk genertation
