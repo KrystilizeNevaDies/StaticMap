@@ -32,12 +32,15 @@ function Initialize(Plugin)
 	local BinaryFormat = package.cpath:match("%p[\\|/]?%p(%a+)")
 	
 	if BinaryFormat == "dll" then
-			OS = "Windows"
+		OS = "Windows"
 	elseif BinaryFormat == "so" then
 		OS = "Linux"
 	elseif BinaryFormat == "dylib" then
 		OS = "MacOS"
 	end
+	
+	BinaryFormat = nil
+	
     if OS == "Linux" then -- Find linux Architecture
         n = os.tmpname()
 
@@ -53,12 +56,12 @@ function Initialize(Plugin)
 
         os.remove(n)
     end
-	BinaryFormat = nil
 
     LOG("Detected Operating System: " .. OS)
     if OS == "Linux" then
         LOG("Detected Arch: " .. ARCH)
     end
+
 
 
 
@@ -212,8 +215,7 @@ end
 
 
 function OnTick(Delta)
-    if GlobalTick % TicksPerRender == 0 then -- If A render is currently allowed
-        if #Chunks > 0.5 then -- If more then one render is scheduled
+    if (GlobalTick % TicksPerRender == 0) and (#Chunks > 0.5) then -- If A render is currently allowed and more then one is scheduled
             local Temp = 0
             for Key, Value in pairs(Chunks) do -- Renders Per Tick Chunks
                 if Temp < ChunksPerRender then
@@ -222,7 +224,6 @@ function OnTick(Delta)
                     Chunks[Key] = nil
                 end
             end
-        end
     end
     GlobalTick = GlobalTick + 1
 end
